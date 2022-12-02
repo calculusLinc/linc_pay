@@ -17,9 +17,6 @@ class Transaction
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $type = null;
-
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
@@ -38,21 +35,12 @@ class Transaction
     #[ORM\ManyToOne(inversedBy: 'transactions')]
     private ?TransactionActor $receiver = null;
 
+    #[ORM\ManyToOne(inversedBy: 'transactions')]
+    private ?TransactionType $transaction_type = null;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
-
-        return $this;
     }
 
     public function getDate(): ?\DateTimeInterface
@@ -123,6 +111,18 @@ class Transaction
     public function setReceiver(?TransactionActor $receiver): self
     {
         $this->receiver = $receiver;
+
+        return $this;
+    }
+
+    public function getTransactionType(): ?TransactionType
+    {
+        return $this->transaction_type;
+    }
+
+    public function setTransactionType(?TransactionType $transaction_type): self
+    {
+        $this->transaction_type = $transaction_type;
 
         return $this;
     }
